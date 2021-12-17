@@ -32,7 +32,7 @@ namespace MechWarrior
             }
             if (!threadwork.TryAdd(state.ThreadName, state))
             {
-                throw new ArgumentException("Couldn't add thread to bag");
+                throw new ArgumentException("Couldn't add thread to bag"); 
             }
             if (!ThreadPool.QueueUserWorkItem(wait, state))
             {
